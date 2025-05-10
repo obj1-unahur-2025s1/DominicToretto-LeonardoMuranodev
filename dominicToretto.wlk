@@ -4,6 +4,8 @@ object toretto {
     const autos = []
 
     //Metodos de consulta
+    method autos() = autos
+
     method autosNoEnCondiciones(){
         return autos.filter({auto => not auto.estaEnCondiciones()})
     }
@@ -44,6 +46,8 @@ object toretto {
 
 object taller {
     const autos = []
+
+    method autos() = autos
 
     //Metodos de indicacion
     method recibirAutos(unaLista){

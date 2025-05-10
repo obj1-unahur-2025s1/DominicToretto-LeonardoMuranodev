@@ -1,2 +1,51 @@
 import autos.*
 import dominicToretto.*
+
+describe "Pruebas" {
+    method comprarTodosLosAutos() {
+        toretto.comprar(ferrari)
+        toretto.comprar(flechaRubi)
+        toretto.comprar(intocable)
+        toretto.comprar(dodgeChargerRT)
+    }
+
+    method initialize(){
+        self.comprarTodosLosAutos()
+    }
+
+    test "Toretto compra todos los autos, les hace una prueba de velocidad, y manda al taller a todos los que no estan aptos. En este caso son los cuatro autos"{
+        toretto.pruebasDeVelocidad() 
+        toretto.mandarAutosAlTaller()
+        assert.equals([ferrari, flechaRubi, intocable, dodgeChargerRT],taller.autos())
+    }
+
+    test "Toretto compra todos los autos, les hace una prueba de velocidad, y manda al taller a todos los que no estan aptos. El taller los repara: el ferrari, el intocable y el dodge estan aptos, la felcha rubi permanece en el taller"{
+        toretto.pruebasDeVelocidad() 
+        toretto.mandarAutosAlTaller()
+        taller.repararAutos()
+        assert.equals([ferrari, intocable, dodgeChargerRT], toretto.autosEnCondiciones())
+        assert.equals([flechaRubi], toretto.autosNoEnCondiciones())
+        assert.that(taller.autos().isEmpty())
+    }
+
+    test "Toretto compra todos los autos, y asi el auto mas rapido es el dodge charger RT con una velocidad maxima de 345"{
+        assert.equals(dodgeChargerRT, toretto.masRapido())
+        assert.equals(80 + 3 * 35 + 2 * 80, toretto.masRapido().velocidadMaxima())
+    }
+
+    test "Toretto compra todos los autos, y asi el promedio de la velocidad máxima de sus autos es 181.25"{
+        assert.equals(181.25, toretto.promedioVelMax())
+    }
+
+    test "Toretto compra todos los autos, y asi el auto mas rapido es el dodge charger RT con una velocidad de 345, la cual no supera al promedio de los autos de 181,25 * 2 = 362.5"{
+        assert.notThat(toretto.masRapidoEsElDobleDeRapidoDelPromedio())
+    }
+
+    test "Toretto compra todos los autos, les hace una prueba de velocidad, pero es final de temporada asi que los vende"{
+        toretto.pruebasDeVelocidad() 
+        toretto.mandarAutosAlTaller()
+        toretto.finalDeTemporada()
+        assert.equals(0,toretto.autos().size())
+        assert.that(toretto.autos().isEmpty())
+    }
+}
